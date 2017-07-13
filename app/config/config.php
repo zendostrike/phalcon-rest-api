@@ -7,7 +7,7 @@ return new \Phalcon\Config(
             'host' => 'localhost',
             'port' => 3306,
             'username' => 'root',
-            'password' => '',
+            'password' => 'dev123',
             'dbname' => 'muchik',
         ],
 
