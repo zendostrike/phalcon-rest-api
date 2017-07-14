@@ -4,7 +4,7 @@ $loader = new \Phalcon\Loader();
 $loader->registerNamespaces(
   [
     'App\Services'    => realpath(__DIR__ . '/../services/'),
-    'App\Controllers' => realpath(__DIR__ . '/../controllers/'),
+    'App\Resources' => realpath(__DIR__ . '/../resources/'),
     'App\Models'      => realpath(__DIR__ . '/../models/'),
   ]
 );

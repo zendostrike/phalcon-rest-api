@@ -5,13 +5,13 @@ namespace App\Services;
 use App\Models\Artist;
 
 /**
- * business logic for users
+ * business logic for artists
  *
- * Class UsersService
+ * Class ArtistService
  */
 class ArtistService extends BaseService
 {
-  /** Unable to create user */
+  /** Unable to create artist */
   const ERROR_UNABLE_CREATE_ARTIST = 11001;
 
   /**
@@ -22,7 +22,7 @@ class ArtistService extends BaseService
   public function createArtist(array $artistData)
   {
     try {
-    $artist   = new Users();
+    $artist = new Artist();
     $artist->artist_name = $artistData['artist_name'];
     $artist->real_name = $artistData['real_name'];
     $artist->born_date = $artistData['born_date'];
@@ -31,12 +31,12 @@ class ArtistService extends BaseService
     $result = $artist->create();
 
     if (!$result) {
-      throw new ServiceException('Unable to create user', self::ERROR_UNABLE_CREATE_USER);
+      throw new ServiceException('Unable to create artist', self::ERROR_UNABLE_CREATE_ARTIST);
     }
 
     } catch (\PDOException $e) {
       if ($e->getCode() == 23505) {
-        throw new ServiceException('User already exists', self::ERROR_ALREADY_EXISTS, $e);
+        throw new ServiceException('Artist already exists', self::ERROR_ALREADY_EXISTS, $e);
       } else {
         throw new ServiceException($e->getMessage(), $e->getCode(), $e);
       }

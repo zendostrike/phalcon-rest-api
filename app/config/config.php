@@ -12,7 +12,7 @@ return new \Phalcon\Config(
         ],
 
         'application' => [
-            'controllersDir' => "app/controllers/",
+            'resourcesDir' => "app/resources/",
             'modelsDir' => "app/models/",
             'baseUri' => "/",
         ],
