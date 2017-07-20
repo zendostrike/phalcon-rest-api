@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-class Artist extends \Phalcon\Mvc\Model
+class Artist extends BaseModel
 {
 
     public function initialize()
     {
-        $this->setSource("artists");
+      $this->setSource("artist");
     }
 
     public static function find($parameters = null)

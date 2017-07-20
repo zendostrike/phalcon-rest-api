@@ -1,5 +1,7 @@
 <?php
 
+use App\Resources\AbstractHttpException;
+
 try {
   // Loading Configs
   $config = require(__DIR__ . '/../app/config/config.php');
@@ -25,7 +27,7 @@ try {
     function () use ($app) {
       // Getting the return value of method
       $return = $app->getReturnedValue();
-
+      
       if (is_array($return)) {
         // Transforming arrays to JSON
         $app->response->setContent(json_encode($return));
@@ -56,14 +58,18 @@ try {
                 ])
                 ->send();
 } catch (\Exception $e) {
-  // Standard error format
-  $result = [
-    AbstractHttpException::KEY_CODE    => 500,
-    AbstractHttpException::KEY_MESSAGE => 'Some error occurred on the server.'
-  ];
+    
+    $message = $config->application->env == "PROD" ? 
+             'Some error occurred on the server.' : $e->getMessage();
+    
+    // Standard error format
+    $result = [
+      AbstractHttpException::KEY_CODE    => 500,
+      AbstractHttpException::KEY_MESSAGE => $message
+    ];
 
-  // Sending error response
-  $app->response->setStatusCode(500, 'Internal Server Error')
-                ->setJsonContent($result)
-                ->send();
+    // Sending error response
+    $app->response->setStatusCode(500, 'Internal Server Error')
+                  ->setJsonContent($result)
+                  ->send();
 }

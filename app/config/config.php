@@ -5,7 +5,7 @@ return new \Phalcon\Config(
         'database' => [
             'adapter' => 'Mysql',
             'host' => 'localhost',
-            'port' => 3306,
+            'port' => 4406,
             'username' => 'root',
             'password' => 'dev123',
             'dbname' => 'muchik',
@@ -15,6 +15,7 @@ return new \Phalcon\Config(
             'resourcesDir' => "app/resources/",
             'modelsDir' => "app/models/",
             'baseUri' => "/",
+            'env' => "DEV"
         ],
     ]
 );

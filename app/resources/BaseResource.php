@@ -2,7 +2,9 @@
 
 namespace App\Resources;
 
-abstract class BaseResource extends \Phalcon\DI\Injectable
+use Phalcon\Mvc\Controller;
+
+abstract class BaseResource extends Controller
 {
     /**
      * Route not found. HTTP 404 Error
