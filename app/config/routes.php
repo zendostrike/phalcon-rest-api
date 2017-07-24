@@ -5,6 +5,7 @@ $artistCollection->setHandler('\App\Resources\ArtistResource', true);
 $artistCollection->setPrefix('/artist');
 $artistCollection->post('/add', 'addAction');
 $artistCollection->get('/list', 'listAction');
+$artistCollection->get('/{artistId:[1-9][0-9]*}', 'getAction');
 $artistCollection->put('/{artistId:[1-9][0-9]*}', 'updateAction');
 $artistCollection->delete('/{artistId:[1-9][0-9]*}', 'deleteAction');
 

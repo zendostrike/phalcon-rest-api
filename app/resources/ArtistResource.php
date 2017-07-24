@@ -2,55 +2,66 @@
 
 namespace App\Resources;
 
-use App\Helpers\ModelParser;
-use Phalcon\Mvc\Controller;
+use App\Models\Artist;
 
-class ArtistResource extends Controller implements IResource
+class ArtistResource extends BaseResource implements IResource
 {
     
-    private $modelParser;
-    
     public function onConstruct(){
-        $this->modelParser = new ModelParser();
-        $this->modelParser->addParam("artist_name");
-        $this->modelParser->addParam("real_name");
-        $this->modelParser->addParam("born_date");
-        $this->modelParser->addParam("img");
+        $this->addParam("artist_name");
+        $this->addParam("real_name");
+        $this->addParam("born_date");
+        $this->addParam("img");
     }
     
     public function addAction() {
         
         $jsonData = $this->request->getJsonRawBody();
-        $o_artist = $this->modelParser->parse("Artist", $jsonData);
+        $newArtist = $this->parse("Artist", $jsonData);
         
-        $o_artist->save();
+        $newArtist->create();
         
-        return $o_artist;
+        return $newArtist;
         
     }
 
     public function deleteAction($_identifier) {
 
+        $artist = Artist::findFirst($_identifier);
+        
+        $artist->delete();
+        
+        return "Artist deleted";
     }
 
     public function getAction($_identifier) {
-
+        $artist = Artist::findFirst($_identifier);
+        return $artist;
     }
 
     public function listAction() {
 
-        $artists = array(
-            "artist_name" => "Michael Jackson",
-            "real_name" => "Michael Joseph Jackson",
-            "img" => "http://lakerholicz.com/wp-content/uploads/2014/02/michael-jackson.jpg"
-        );
-
+        $artists = Artist::find();
         return $artists;
 
     }
 
     public function updateAction($_identifier) {
-
+        
+        
+        $jsonData = $this->request->getJsonRawBody();
+        $updatedArtist = $this->parse("Artist", $jsonData);
+        
+        $artist = Artist::findFirst($_identifier);
+        
+        if($artist){
+            $this->patchChanges($artist, $updatedArtist);
+            $artist->update();
+        } else {
+            $updatedArtist->create();
+        }
+        
+        return $artist;
     }
 
 }

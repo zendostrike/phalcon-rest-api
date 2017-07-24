@@ -28,9 +28,11 @@ try {
       // Getting the return value of method
       $return = $app->getReturnedValue();
       
-      if (is_array($return)) {
-        // Transforming arrays to JSON
-        $app->response->setContent(json_encode($return));
+      if(is_object($return)){
+        // Transforming model to arrays to JSON
+        $app->response->setContent(
+                json_encode($return->toArray())
+                );
       } elseif (!strlen($return)) {
         // Successful response without any content
         $app->response->setStatusCode('204', 'No Content');
