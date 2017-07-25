@@ -6,7 +6,6 @@ use Phalcon\Mvc\Controller;
 
 class BaseResource extends Controller
 {
-
     const ERROR_NOT_FOUND = 1;
     const ERROR_INVALID_REQUEST = 2;
     const MODEL_DIR = "\\App\\Models\\";
@@ -16,7 +15,6 @@ class BaseResource extends Controller
     public function addParam($param){
         array_push($this->params, $param);
     }
-    
     
     /**
      * Load changed properties of a model to finded model

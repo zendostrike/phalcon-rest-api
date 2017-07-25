@@ -29,6 +29,7 @@ try {
       $return = $app->getReturnedValue();
       
       if(is_object($return)){
+        $app->response->setStatusCode(200, "OK");
         // Transforming model to arrays to JSON
         $app->response->setContent(
                 json_encode($return->toArray())

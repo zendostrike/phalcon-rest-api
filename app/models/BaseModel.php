@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-class BaseModel extends \Phalcon\Mvc\Model
-{
+use \Phalcon\Mvc\Model;
+
+class BaseModel extends Model {
 
 }

@@ -4,31 +4,26 @@ namespace App\Resources;
 
 use App\Models\Artist;
 
-class ArtistResource extends BaseResource implements IResource
-{
+class ArtistResource extends BaseResource implements IResource{
     
     public function onConstruct(){
         $this->addParam("artist_name");
         $this->addParam("real_name");
         $this->addParam("born_date");
-        $this->addParam("img");
+        $this->addParam("img_url");
     }
     
     public function addAction() {
+        $jsonRawBody = $this->request->getJsonRawBody();
         
-        $jsonData = $this->request->getJsonRawBody();
-        $newArtist = $this->parse("Artist", $jsonData);
+        $artist = $this->parse("Artist", $jsonRawBody);
+        $artist->create();
         
-        $newArtist->create();
-        
-        return $newArtist;
-        
+        return $artist;
     }
 
     public function deleteAction($_identifier) {
-
         $artist = Artist::findFirst($_identifier);
-        
         $artist->delete();
         
         return "Artist deleted";
@@ -40,28 +35,24 @@ class ArtistResource extends BaseResource implements IResource
     }
 
     public function listAction() {
-
-        $artists = Artist::find();
-        return $artists;
-
+        return Artist::find();
     }
 
     public function updateAction($_identifier) {
-        
-        
         $jsonData = $this->request->getJsonRawBody();
-        $updatedArtist = $this->parse("Artist", $jsonData);
         
+        $updatedArtist = $this->parse("Artist", $jsonData);
         $artist = Artist::findFirst($_identifier);
         
-        if($artist){
-            $this->patchChanges($artist, $updatedArtist);
-            $artist->update();
-        } else {
+        if(!$artist){
             $updatedArtist->create();
+            return $updatedArtist;
         }
         
-        return $artist;
+        $this->patchChanges($artist, $updatedArtist);
+        $artist->update();
+        
+        return $artist ? $artist : $updatedArtist;
     }
 
 }
