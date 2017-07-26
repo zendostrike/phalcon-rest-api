@@ -34,6 +34,10 @@ try {
         $app->response->setContent(
                 json_encode($return->toArray())
                 );
+      } elseif(is_array($return)){
+        $app->response->setStatusCode(200, "OK");
+        // Transforming array to arrays to JSON
+        $app->response->setContent(json_encode($return));
       } elseif (!strlen($return)) {
         // Successful response without any content
         $app->response->setStatusCode('204', 'No Content');
