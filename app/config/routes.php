@@ -15,7 +15,7 @@ $app->mount($artistCollection);
 $app->notFound(
   function () use ($app) {
       $exception =
-        new \App\Resources\HttpExceptions\Http404Exception(
+        new \App\Exceptions\Http404Exception(
           _('URI not found or error in request.'),
           \App\Resources\BaseResource::ERROR_NOT_FOUND,
           new \Exception('URI not found: ' . $app->request->getMethod() . ' ' . $app->request->getURI())

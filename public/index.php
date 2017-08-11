@@ -1,6 +1,6 @@
 <?php
 
-use App\Resources\AbstractHttpException;
+use App\Exceptions\AbstractHttpException;
 
 try {
   // Loading Configs

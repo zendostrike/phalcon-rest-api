@@ -2,6 +2,12 @@
 
 namespace App\Resources;
 
+/**
+ * Interface IResource
+ *
+ * Define the default structure of a resource
+ *
+ */
 interface IResource
 {
     public function addAction();

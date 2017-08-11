@@ -11,23 +11,35 @@ class BaseResource extends Controller
     const MODEL_DIR = "\\App\\Models\\";
     
     private $params = [];
+    public $errors = [];
     
     public function addParam($param){
-        array_push($this->params, $param);
+        if(is_string($param)) {
+            array_push($this->params, [
+                "field" => $param,
+                "mandatory" => false
+                ]);
+        } else {
+            array_push($this->params, $param);
+        }
     }
     
     /**
      * Load changed properties of a model to finded model
      * @param Object $modelName
-     * @param Object $jsonData
+     * @param Object $jsonRawBody
      */
-    public function parse($modelName, $jsonData){
+    public function parse($modelName, $jsonRawBody){
         $class = self::MODEL_DIR. $modelName;
         $model = new $class();
         
         foreach($this->params as $param){
-            if(property_exists($jsonData, $param)){
-                $model->$param = $jsonData->$param;
+            if(property_exists($jsonRawBody, $param["field"])){
+                $model->$param = $jsonRawBody->$param["field"];
+            } else {
+                if($param["mandatory"]){
+                    array_push($this->errors, $param["field"] . " is mandatory.");
+                }
             }
         }
         

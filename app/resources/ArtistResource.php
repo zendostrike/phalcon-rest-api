@@ -6,9 +6,9 @@ use App\Models\Artist;
 
 class ArtistResource extends BaseResource implements IResource{
     
-    // Default params
+    // Default params that will be catched by the parser
     public function onConstruct(){
-        $this->addParam("artist_name");
+        $this->addParam(["field" => "artist_name", "mandatory" => true ]);
         $this->addParam("real_name");
         $this->addParam("born_date");
         $this->addParam("img_url");
@@ -17,9 +17,16 @@ class ArtistResource extends BaseResource implements IResource{
     // Create new artist
     public function addAction() {
         $jsonRawBody = $this->request->getJsonRawBody();
-        
+
         $artist = $this->parse("Artist", $jsonRawBody); //Returns a phalcon model
-        $artist->create();
+        
+        if(!$artist->create()){
+            $exception = new \App\Exceptions\Http400Exception(
+                    'Input parameters validation error',
+                    self::ERROR_INVALID_REQUEST);
+            
+            throw $exception->addErrorDetails($this->errors);
+        }
         
         return $artist;
     }

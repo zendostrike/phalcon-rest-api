@@ -5,10 +5,10 @@ return new \Phalcon\Config(
         'database' => [
             'adapter' => 'Mysql',
             'host' => 'localhost',
-            'port' => 3306,
+            'port' => 4406,
             'username' => 'root',
             'password' => 'dev123',
-            'dbname' => 'music_rating',
+            'dbname' => 'muchik',
         ],
 
         'application' => [
