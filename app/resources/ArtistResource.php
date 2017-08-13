@@ -3,12 +3,15 @@
 namespace App\Resources;
 
 use App\Models\Artist;
+use App\Validators\ArtistValidator;
 
 class ArtistResource extends BaseResource implements IResource{
     
+    private $errors = [];
+    
     // Default params that will be catched by the parser
     public function onConstruct(){
-        $this->addParam(["field" => "artist_name", "mandatory" => true ]);
+        $this->addParam("artist_name");
         $this->addParam("real_name");
         $this->addParam("born_date");
         $this->addParam("img_url");
@@ -16,7 +19,24 @@ class ArtistResource extends BaseResource implements IResource{
     
     // Create new artist
     public function addAction() {
+        
+        $validation = new ArtistValidator();
+        
         $jsonRawBody = $this->request->getJsonRawBody();
+        
+        $messages = $validation->validate($jsonRawBody);
+        
+        if (count($messages)) {
+            foreach ($messages as $message) {
+                array_push($this->errors, $message);
+            }
+            
+            $exception = new \App\Exceptions\Http400Exception(
+                    'Input parameters validation error',
+                    self::ERROR_INVALID_REQUEST);
+            
+            throw $exception->addErrorDetails($this->errors);
+        }
 
         $artist = $this->parse("Artist", $jsonRawBody); //Returns a phalcon model
         
@@ -27,6 +47,8 @@ class ArtistResource extends BaseResource implements IResource{
             
             throw $exception->addErrorDetails($this->errors);
         }
+        
+        $artist->create();
         
         return $artist;
     }

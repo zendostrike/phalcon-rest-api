@@ -11,17 +11,9 @@ class BaseResource extends Controller
     const MODEL_DIR = "\\App\\Models\\";
     
     private $params = [];
-    public $errors = [];
     
     public function addParam($param){
-        if(is_string($param)) {
-            array_push($this->params, [
-                "field" => $param,
-                "mandatory" => false
-                ]);
-        } else {
-            array_push($this->params, $param);
-        }
+        array_push($this->params, $param);
     }
     
     /**
@@ -36,10 +28,6 @@ class BaseResource extends Controller
         foreach($this->params as $param){
             if(property_exists($jsonRawBody, $param["field"])){
                 $model->$param = $jsonRawBody->$param["field"];
-            } else {
-                if($param["mandatory"]){
-                    array_push($this->errors, $param["field"] . " is mandatory.");
-                }
             }
         }
         
