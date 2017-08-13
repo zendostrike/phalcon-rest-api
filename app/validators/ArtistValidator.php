@@ -11,7 +11,7 @@ class ArtistValidator extends Validation
     {
         $this->add('artist_name', new PresenceOf(
                 [
-                    'message' => 'The name is required',
+                    'message' => 'The artist_name is required',
                 ]
             )
         );

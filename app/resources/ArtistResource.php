@@ -20,15 +20,15 @@ class ArtistResource extends BaseResource implements IResource{
     // Create new artist
     public function addAction() {
         
+        // Initialize validation and validate json posted
         $validation = new ArtistValidator();
-        
         $jsonRawBody = $this->request->getJsonRawBody();
-        
         $messages = $validation->validate($jsonRawBody);
         
+        // If errors exists, then throw error description and details
         if (count($messages)) {
             foreach ($messages as $message) {
-                array_push($this->errors, $message);
+                array_push($this->errors, (string)$message);
             }
             
             $exception = new \App\Exceptions\Http400Exception(
@@ -37,17 +37,9 @@ class ArtistResource extends BaseResource implements IResource{
             
             throw $exception->addErrorDetails($this->errors);
         }
-
-        $artist = $this->parse("Artist", $jsonRawBody); //Returns a phalcon model
         
-        if(!$artist->create()){
-            $exception = new \App\Exceptions\Http400Exception(
-                    'Input parameters validation error',
-                    self::ERROR_INVALID_REQUEST);
-            
-            throw $exception->addErrorDetails($this->errors);
-        }
-        
+        // Transform jsonRawBody to Artist Model
+        $artist = $this->parse("Artist", $jsonRawBody); 
         $artist->create();
         
         return $artist;
