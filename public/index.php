@@ -12,7 +12,10 @@ try {
   // Initializing DI container
   /** @var \Phalcon\DI\FactoryDefault $di */
   $di = require __DIR__ . '/../app/config/di.php';
-
+  
+  // Enable exceptions on model save
+  Phalcon\Mvc\Model::setup(['exceptionOnFailedSave' => true]);
+  
   // Initializing application
   $app = new \Phalcon\Mvc\Micro();
 

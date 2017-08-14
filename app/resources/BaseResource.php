@@ -26,8 +26,8 @@ class BaseResource extends Controller
         $model = new $class();
         
         foreach($this->params as $param){
-            if(property_exists($jsonRawBody, $param["field"])){
-                $model->$param = $jsonRawBody->$param["field"];
+            if(property_exists($jsonRawBody, $param)){
+                $model->$param = $jsonRawBody->$param;
             }
         }
         

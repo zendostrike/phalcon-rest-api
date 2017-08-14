@@ -19,15 +19,14 @@ class ArtistResource extends BaseResource implements IResource{
     
     // Create new artist
     public function addAction() {
-        
-        // Initialize validation and validate json posted
+        // Initialize validation and validate posted json
         $validation = new ArtistValidator();
         $jsonRawBody = $this->request->getJsonRawBody();
-        $messages = $validation->validate($jsonRawBody);
+        $errorMessages = $validation->validate($jsonRawBody);
         
         // If errors exists, then throw error description and details
-        if (count($messages)) {
-            foreach ($messages as $message) {
+        if (count($errorMessages)) {
+            foreach ($errorMessages as $message) {
                 array_push($this->errors, (string)$message);
             }
             
@@ -39,7 +38,7 @@ class ArtistResource extends BaseResource implements IResource{
         }
         
         // Transform jsonRawBody to Artist Model
-        $artist = $this->parse("Artist", $jsonRawBody); 
+        $artist = $this->parse("Artist", $jsonRawBody);
         $artist->create();
         
         return $artist;
